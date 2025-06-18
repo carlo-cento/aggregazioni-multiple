@@ -1,7 +1,10 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Head from "next/head"
 import styles from "@/styles/Home.module.css"
 import { Geist, Geist_Mono } from "next/font/google"
+import { Table } from "@mantine/core"
+import { Data } from "../../util/types"
+import { displayDate } from "../../util/functions"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -13,17 +16,47 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 })
 
+function RawTable(props: { entries: Data }) {
+	const { entries } = props
+	const rows = entries.map((element, index) => {
+		return (
+			<Table.Tr key={index}>
+				<Table.Td>{element.project.name}</Table.Td>
+				<Table.Td>{element.employee.name}</Table.Td>
+				<Table.Td>{displayDate(element.date)}</Table.Td>
+				<Table.Td>{element.hours}</Table.Td>
+			</Table.Tr>
+		)
+	})
+
+	return (
+		<Table stickyHeader withRowBorders striped>
+			<Table.Thead>
+				<Table.Tr>
+					<Table.Th>Project</Table.Th>
+					<Table.Th>Employee</Table.Th>
+					<Table.Th>Date</Table.Th>
+					<Table.Th>Hours</Table.Th>
+				</Table.Tr>
+			</Table.Thead>
+			<Table.Tbody>{rows}</Table.Tbody>
+		</Table>
+	)
+}
+
 export default function Home() {
+	const [data, setData] = useState<Data>()
+
 	useEffect(() => {
 		const fetchData = async (projects: number, employees: number, entries: number) => {
 			const res = await fetch(
 				`/api/mockData?projects=${projects}&employees=${employees}&entries=${entries}`
 			)
 			const data = await res.json()
-			console.log(data)
+			setData(data)
 		}
 
-		fetchData(3, 5, 20)
+		fetchData(3, 5, 30)
 	}, [])
 
 	return (
@@ -35,7 +68,9 @@ export default function Home() {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 
-			<div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}></div>
+			<div className={`${styles.page} ${geistSans.variable} ${geistMono.variable}`}>
+				{data && <RawTable entries={data} />}
+			</div>
 		</>
 	)
 }
