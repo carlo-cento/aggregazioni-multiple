@@ -1,10 +1,10 @@
 export type Project = {
-	id: number
+	id: string
 	name: string
 }
 
 export type Employee = {
-	id: number
+	id: string
 	name: string
 }
 
@@ -16,3 +16,4 @@ export type Entry = {
 }
 
 export type Data = Entry[]
+
