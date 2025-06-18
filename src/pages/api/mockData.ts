@@ -40,14 +40,17 @@ export default function handler(
 			const employeeSeed = Math.floor(Math.random() * employeesNames.length)
 
 			const project = {
-				id: projectSeed,
+				id: projectSeed.toString(),
 				name: projectsNames[projectSeed],
 			}
 			const employee = {
-				id: employeeSeed,
+				id: employeeSeed.toString(),
 				name: employeesNames[employeeSeed],
 			}
-			const date = faker.date.between({ from: "2025-01-01", to: "2025-02-01" }).toISOString()
+			const date = faker.date
+				.between({ from: "2025-01-01", to: "2025-02-01" })
+				.toISOString()
+				.split("T")[0]
 			const hours = faker.number.int({ min: 1, max: 6 })
 
 			result.push({
