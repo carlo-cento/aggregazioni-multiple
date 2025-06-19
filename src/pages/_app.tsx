@@ -5,7 +5,20 @@ import { createTheme, MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 
 const theme = createTheme({
-	/* ... */
+	components: {
+		Table: {
+			styles: () => ({
+				th: {
+					textTransform: "capitalize",
+					textDecoration: "underline",
+					cursor: "pointer",
+				},
+				td: {
+					textTransform: "capitalize",
+				},
+			}),
+		},
+	},
 })
 
 export default function App({ Component, pageProps }: AppProps) {

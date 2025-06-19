@@ -51,6 +51,7 @@ export default function handler(
 				.between({ from: "2025-01-01", to: "2025-02-01" })
 				.toISOString()
 				.split("T")[0]
+
 			const hours = faker.number.int({ min: 1, max: 6 })
 
 			result.push({
