@@ -214,7 +214,12 @@ export default function Home() {
 				>
 					Reset
 				</Button>
-				<Button leftSection={<IconAdjustments />} color="dark" aria-label="Impostazioni DB">
+				<Button
+					disabled
+					leftSection={<IconAdjustments />}
+					color="dark"
+					aria-label="Impostazioni DB"
+				>
 					Data
 				</Button>
 			</div>
