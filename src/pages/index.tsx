@@ -56,7 +56,7 @@ export default function Home() {
 	const [data, setData] = useState<Data>([])
 
 	// TODO settings
-	const [settings, setSettings] = useState({ projects: 3, employees: 3, entries: 10 }) // eslint-disable-line @typescript-eslint/no-unused-vars
+	const [settings, setSettings] = useState({ projects: 3, employees: 5, entries: 30 }) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 	const employeesMap = useMemo(() => {
 		const map = new Map<string, string>()

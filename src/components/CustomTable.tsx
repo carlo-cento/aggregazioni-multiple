@@ -34,7 +34,7 @@ export function CustomTable(props: {
 	const processedEntries = useMemo((): ProcessedEntry[] => {
 		if (!props.entries) return []
 
-		// non ci sono raggruppamenti -> restituisci i dati originali
+		// non ci sono raggruppamenti -> restituisci i dati originali processati
 		if (groupKeys.length === 0 && Array.isArray(props.entries)) {
 			return (props.entries as Data).map((entry) => ({
 				employee: entry.employee.name,
