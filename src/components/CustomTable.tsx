@@ -95,10 +95,14 @@ export function CustomTable(props: {
 	}
 
 	const DynamicRows = () => {
-		//TODO processedEntries === 0
-
 		const columns = props.groupKeys.length > 0 ? props.groupKeys : ["employee", "project", "date"]
-
+		if (processedEntries.length === 0) {
+			return (
+				<Table.Tr>
+					<Table.Td colSpan={columns.length + 1}>No data</Table.Td>
+				</Table.Tr>
+			)
+		}
 		if (processedEntries.length > 0) {
 			return processedEntries.map((element: ProcessedEntry, index) => {
 				return (
