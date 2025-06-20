@@ -54,6 +54,7 @@ const CurrentKeysSelection = ({ groupKeys }: { groupKeys: GroupKey[] }) => {
 export default function Home() {
 	// Fetch dati
 	const [data, setData] = useState<Data>([])
+	const [isLoading, setIsLoading] = useState<boolean>(true)
 
 	// TODO settings
 	const [settings, setSettings] = useState({ projects: 3, employees: 5, entries: 30 }) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -76,6 +77,7 @@ export default function Home() {
 
 	useEffect(() => {
 		const fetchData = async (projects: number, employees: number, entries: number) => {
+			setIsLoading(true)
 			try {
 				const res = await fetch(
 					`/api/mockData?projects=${projects}&employees=${employees}&entries=${entries}`
@@ -100,6 +102,8 @@ export default function Home() {
 					icon: <IconExclamationCircleFilled size={20} />,
 					color: "red",
 				})
+			} finally {
+				setIsLoading(false)
 			}
 		}
 
@@ -218,7 +222,7 @@ export default function Home() {
 			<CurrentKeysSelection groupKeys={groupKeys} />
 
 			<div className={`${styles.table_container} ${geistSans.variable} ${geistMono.variable}`}>
-				{groupedData && employeesMap && projectsMap ? (
+				{!isLoading ? (
 					<CustomTable
 						entries={groupedData}
 						groupKeys={groupKeys}
