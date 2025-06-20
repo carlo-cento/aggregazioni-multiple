@@ -56,16 +56,25 @@ export default function Home() {
 	const [data, setData] = useState<Data>([])
 
 	// TODO settings
-	const [settings, setSettings] = useState({ projects: 3, employees: 5, entries: 30 }) // eslint-disable-line @typescript-eslint/no-unused-vars
+	const [settings, setSettings] = useState({ projects: 3, employees: 3, entries: 10 }) // eslint-disable-line @typescript-eslint/no-unused-vars
 
-	// TODO sistemare
-	const [employeesMap, setEmployeesMap] = useState<Map<string, string>>(new Map())
-	const [projectsMap, setProjectsMap] = useState<Map<string, string>>(new Map())
+	const employeesMap = useMemo(() => {
+		const map = new Map<string, string>()
+		data.forEach((entry) => {
+			map.set(entry.employee.id, entry.employee.name)
+		})
+		return map
+	}, [data])
+
+	const projectsMap = useMemo(() => {
+		const map = new Map<string, string>()
+		data.forEach((entry) => {
+			map.set(entry.project.id, entry.project.name)
+		})
+		return map
+	}, [data])
 
 	useEffect(() => {
-		const employeesMap = new Map()
-		const projectsMap = new Map()
-
 		const fetchData = async (projects: number, employees: number, entries: number) => {
 			try {
 				const res = await fetch(
@@ -82,17 +91,6 @@ export default function Home() {
 				}
 
 				const data: Data = await res.json()
-
-				data.forEach((entry) => {
-					if (!employeesMap.has(entry.employee.id))
-						employeesMap.set(entry.employee.id, entry.employee.name)
-
-					if (!projectsMap.has(entry.project.id))
-						projectsMap.set(entry.project.id, entry.project.name)
-				})
-
-				setEmployeesMap(employeesMap)
-				setProjectsMap(projectsMap)
 				setData(data)
 			} catch (error) {
 				console.error(error)
@@ -164,7 +162,7 @@ export default function Home() {
 	}
 
 	const groupedData = useMemo(() => {
-		if (!data) return null
+		if (!data) return []
 		if (groupKeys.length === 0) return data
 		return groupData(data, groupKeys)
 	}, [data, groupKeys])
