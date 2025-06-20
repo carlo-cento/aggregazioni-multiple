@@ -9,12 +9,14 @@ import { Data, GroupedEntry, GroupKey } from "../../util/types"
 import {
 	IconAdjustments,
 	IconArrowNarrowRight,
+	IconExclamationCircleFilled,
 	IconSquareRoundedMinusFilled,
 	IconSquareRoundedPlusFilled,
 	IconSquareRoundedXFilled,
 } from "@tabler/icons-react"
 
 import { CustomTable } from "../components/CustomTable"
+import { showNotification } from "@mantine/notifications"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -51,8 +53,7 @@ const CurrentKeysSelection = ({ groupKeys }: { groupKeys: GroupKey[] }) => {
 
 export default function Home() {
 	// Fetch dati
-	// TODO : gestire errore, settings
-	const [data, setData] = useState<Data>()
+	const [data, setData] = useState<Data>([])
 
 	// TODO settings
 	const [settings, setSettings] = useState({ projects: 3, employees: 5, entries: 30 }) // eslint-disable-line @typescript-eslint/no-unused-vars
@@ -66,22 +67,42 @@ export default function Home() {
 		const projectsMap = new Map()
 
 		const fetchData = async (projects: number, employees: number, entries: number) => {
-			const res = await fetch(
-				`/api/mockData?projects=${projects}&employees=${employees}&entries=${entries}`
-			)
-			const data: Data = await res.json()
+			try {
+				const res = await fetch(
+					`/api/mockData?projects=${projects}&employees=${employees}&entries=${entries}`
+				)
 
-			data.forEach((entry) => {
-				if (!employeesMap.has(entry.employee.id))
-					employeesMap.set(entry.employee.id, entry.employee.name)
+				if (!res.ok) {
+					let errorMessage = `HTTP Error ${res.status}`
+					try {
+						const errorData = await res.json()
+						errorMessage = errorData?.error || errorMessage
+					} catch {}
+					throw new Error(errorMessage)
+				}
 
-				if (!projectsMap.has(entry.project.id))
-					projectsMap.set(entry.project.id, entry.project.name)
-			})
+				const data: Data = await res.json()
 
-			setEmployeesMap(employeesMap)
-			setProjectsMap(projectsMap)
-			setData(data)
+				data.forEach((entry) => {
+					if (!employeesMap.has(entry.employee.id))
+						employeesMap.set(entry.employee.id, entry.employee.name)
+
+					if (!projectsMap.has(entry.project.id))
+						projectsMap.set(entry.project.id, entry.project.name)
+				})
+
+				setEmployeesMap(employeesMap)
+				setProjectsMap(projectsMap)
+				setData(data)
+			} catch (error) {
+				console.error(error)
+				showNotification({
+					title: "Fetch Error",
+					message: error instanceof Error ? error.message : "Errore: Impossibile caricare i dati",
+					icon: <IconExclamationCircleFilled size={20} />,
+					color: "red",
+				})
+			}
 		}
 
 		fetchData(settings.projects, settings.employees, settings.entries)
