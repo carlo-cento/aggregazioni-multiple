@@ -131,7 +131,7 @@ export default function Home() {
 				grouped[key] = {
 					totalHours: 0,
 					keyParts: keyParts,
-					entries: [],
+					//entries: [],
 				}
 			}
 			// Non serve per il raggruppamento richiesto, ma potrebbe essere utile per sviluppi successivi
@@ -174,6 +174,7 @@ export default function Home() {
 								handleGroupKeys(option.key)
 							}}
 							aria-label={`Group by ${option.label}`}
+							aria-pressed={groupKeys.includes(option.key)}
 						>
 							{option.label}
 						</Button>

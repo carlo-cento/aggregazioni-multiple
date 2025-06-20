@@ -19,7 +19,7 @@ export type Data = Entry[]
 
 export type GroupedEntry = Record<
 	string,
-	{ totalHours: number; keyParts: string[]; entries: Entry[] }
+	{ totalHours: number; keyParts: string[]; entries?: Entry[] }
 >
 
 export type ProcessedEntry = {
