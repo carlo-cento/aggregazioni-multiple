@@ -7,9 +7,9 @@ export function displayDate(time: string): string {
 }
 
 export const getEmployeeName = (value: string, map: Map<string, string>) => {
-	return map.get(value) || `Employee id: ${value}`
+	return map?.get(value) || `Employee id: ${value}`
 }
 
 export const getProjectName = (value: string, map: Map<string, string>) => {
-	return map.get(value) || `Project id: ${value}`
+	return map?.get(value) || `Project id: ${value}`
 }
