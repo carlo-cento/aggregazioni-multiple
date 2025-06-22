@@ -1,4 +1,3 @@
-import React from "react"
 import { useForm } from "@mantine/form"
 import { showNotification } from "@mantine/notifications"
 import { z } from "zod"
@@ -7,7 +6,7 @@ import { zodResolver } from "mantine-form-zod-resolver"
 import { Button, Group, NumberInput } from "@mantine/core"
 import { IconAdjustments } from "@tabler/icons-react"
 
-export default function SettingsForm(props: {
+export function SettingsForm(props: {
 	setSettings: (settings: Settings) => void
 	currentSettings: Settings
 	close: () => void

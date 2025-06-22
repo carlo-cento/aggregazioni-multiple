@@ -15,10 +15,10 @@ import {
 	IconSquareRoundedXFilled,
 } from "@tabler/icons-react"
 
-import { CustomTable } from "../components/CustomTable"
+import { CustomTable } from "@/components/CustomTable"
 import { showNotification } from "@mantine/notifications"
 import { useDisclosure } from "@mantine/hooks"
-import SettingsForm from "@/components/SettingsForm"
+import { SettingsForm } from "@/components/SettingsForm"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -242,7 +242,7 @@ export default function Home() {
 						projectsMap={projectsMap}
 					/>
 				) : (
-					<Loader mt={"xl"} color="dark" type="bars" />
+					<Loader mt={"xl"} color="dark" aria-label="Loading" data-testid="loading" type="bars" />
 				)}
 			</div>
 		</>

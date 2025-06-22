@@ -6,7 +6,7 @@ import { createTheme, MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 import { Notifications } from "@mantine/notifications"
 
-const theme = createTheme({
+export const theme = createTheme({
 	components: {
 		Table: {
 			styles: () => ({
