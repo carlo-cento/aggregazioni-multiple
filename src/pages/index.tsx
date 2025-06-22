@@ -3,7 +3,7 @@ import Head from "next/head"
 import styles from "@/styles/Style.module.sass"
 import { Geist, Geist_Mono } from "next/font/google"
 
-import { Button, Loader } from "@mantine/core"
+import { Button, Loader, Modal } from "@mantine/core"
 import { Data, GroupedEntry, GroupKey } from "../../util/types"
 
 import {
@@ -17,6 +17,8 @@ import {
 
 import { CustomTable } from "../components/CustomTable"
 import { showNotification } from "@mantine/notifications"
+import { useDisclosure } from "@mantine/hooks"
+import SettingsForm from "@/components/SettingsForm"
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -57,6 +59,7 @@ export default function Home() {
 	const [isLoading, setIsLoading] = useState<boolean>(true)
 
 	// TODO settings
+	const [opened, { open, close }] = useDisclosure(false)
 	const [settings, setSettings] = useState({ projects: 3, employees: 5, entries: 30 }) // eslint-disable-line @typescript-eslint/no-unused-vars
 
 	const employeesMap = useMemo(() => {
@@ -173,6 +176,10 @@ export default function Home() {
 
 	return (
 		<>
+			<Modal opened={opened} onClose={close} title="Settings">
+				<SettingsForm setSettings={setSettings} currentSettings={settings} close={close} />
+			</Modal>
+
 			<Head>
 				<title>Aggregazioni multiple</title>
 				<meta name="description" content="Aggregazioni multiple - Carlo Centoducati" />
@@ -215,7 +222,7 @@ export default function Home() {
 					Reset
 				</Button>
 				<Button
-					disabled
+					onClick={() => open()}
 					leftSection={<IconAdjustments />}
 					color="dark"
 					aria-label="Impostazioni DB"

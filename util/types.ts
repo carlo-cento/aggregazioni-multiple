@@ -30,3 +30,5 @@ export type ProcessedEntry = {
 }
 
 export type GroupKey = "employee" | "project" | "date"
+
+export type Settings = { projects: number; employees: number; entries: number }
